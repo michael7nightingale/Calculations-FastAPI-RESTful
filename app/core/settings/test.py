@@ -8,9 +8,9 @@ from app.core.settings.app import AppSettings
 class TestAppSettings(AppSettings):
     debug: bool = True
 
-    secret_key: SecretStr = SecretStr("test_+apapsd")
+    secret_key: str = "12094joqsfnalfsmas[ori"
 
-    database_url: PostgresDsn
+    database_url: str
 
     max_connection_count = 5
     min_connection_count = 5

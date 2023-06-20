@@ -6,6 +6,8 @@ from app.models.schemas.user import UserLogin, UserShow
 from app.api.dependencies.database import get_repository
 from app.db.repositories.user import UserRepository
 from app.services.auth import create_access_token, decode_access_token
+from app.resources.responses import USER_NOT_FOUND, NO_PERMISSIONS
+
 
 oauth_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
@@ -16,9 +18,8 @@ async def get_current_user(token: str = Depends(oauth_scheme)):
 
 
 async def get_superuser(user: UserShow = Depends(get_current_user)):
-    print(user)
     if not user.is_superuser:
-        raise HTTPException(status_code=403, detail="No superuser")
+        raise HTTPException(status_code=403, detail=NO_PERMISSIONS)
     return user
 
 
