@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from app.core.settings.app import AppSettings
-from app.db.events import build_pool, close_pool
+from app.db.events import build_pool, close_pool, create_superuser
 
 
 def startup_app_handler(
@@ -10,6 +10,8 @@ def startup_app_handler(
 ):
     async def startup_app() -> None:
         await build_pool(app, settings)
+
+        await create_superuser(app, settings)
 
     return startup_app
 

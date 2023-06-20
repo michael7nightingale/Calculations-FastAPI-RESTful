@@ -28,12 +28,10 @@ class FormulaShow(BaseModel):
 
 
 class RequestSchema(BaseModel):
-    method: str
     formula_slug: str
-    url: str
-    user_id: int| None = None
-    data: dict | None = None
-    nums_comma: int | None = None
-    find_mark: str | None = None
+    data: dict
+    find_mark: str
+    user_id: str | None = None
+    nums_comma: int | None = 10
 
 

@@ -8,6 +8,6 @@ class HistoryRepository(BaseRepository):
     def __init__(self, session: Session):
         super().__init__(session=session, model=History)
 
-    async def create(self, history_scheme):
+    def create(self, history_scheme):
         new_history = super().create(**history_scheme.dict())
         return new_history

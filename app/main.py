@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException
 
+from app.api.routes import main_router, science_router, auth_router
 from app.core.config import get_app_settings
 from app.core.events import shutdown_app_handler, startup_app_handler
 
@@ -26,7 +27,7 @@ def get_application() -> FastAPI:
         shutdown_app_handler(application)
     )
 
-    routers = ()
+    routers = (main_router, science_router, auth_router)
 
     for router in routers:
         application.include_router(router)

@@ -1,3 +1,4 @@
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from sqlalchemy import delete, select, update
 
@@ -19,20 +20,23 @@ class BaseRepository:
 
     def all(self):
         query = select(self._model)
-        return (self._session.execute(query)).scalars()
+        return (self._session.execute(query)).scalars().all()
 
     def delete(self, id_: int) -> None:
         query = delete(self._model).where(self._model.id == id_)
         self._session.execute(query)
 
     def filter(self, **kwargs):
-        conditions = (getattr(self._model, key) == value for key, value in kwargs)
-        query = select(self._model).where(*conditions)
-        return (self._session.execute(query)).scalars()
+        query = select(self._model).filter_by(**kwargs)
+        return (self._session.execute(query)).scalars().all()
+
+    def get_by(self, **kwargs):
+        query = select(self._model).filter_by(**kwargs)
+        return (self._session.execute(query)).scalar_one_or_none()
 
     def update(self, id_: int, **kwargs):
         query = update(self._model).where(self._model.id == id_).values(**kwargs)
-        return (self._session.execute(query)).scalar()
+        return (self._session.execute(query)).scalar_one_or_none()
 
     def create(self, **kwargs):
         obj = self._model(**kwargs)

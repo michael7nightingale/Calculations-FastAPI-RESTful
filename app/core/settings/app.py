@@ -16,11 +16,17 @@ class AppSettings(BaseSettings):
     title: str = "Calculations"
     version: str = '1.0'
 
-    database_url: PostgresDsn
+    database_url: str
     max_connection_count: int = 100
     min_connection_count: int = 1
 
-    secret_key: SecretStr
+    superuser_username: str
+    superuser_email: str
+    superuser_password: str
+    superuser_first_name: str
+    superuser_last_name: str
+
+    secret_key: str
     algorithm: str = "HS256"
 
     api_prefix: str = "/api"
@@ -45,6 +51,16 @@ class AppSettings(BaseSettings):
             "title": self.title,
             "version": self.version
 
+        }
+
+    @property
+    def superuser_kwargs(self) -> dict:
+        return {
+            "username": self.superuser_username,
+            "password": self.superuser_password,
+            "email": self.superuser_email,
+            "first_name": self.superuser_first_name,
+            "last_name": self.superuser_last_name
         }
 
     def configure_logging(self) -> None:

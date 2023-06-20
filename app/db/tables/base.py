@@ -1,5 +1,5 @@
 from sqlalchemy.orm import DeclarativeBase, mapped_column
-from sqlalchemy import Integer, UUID, func
+from sqlalchemy import Integer, UUID, func, String
 
 from app.services.auth import create_uuid
 
@@ -9,7 +9,7 @@ class BaseTable(DeclarativeBase):
 
 
 class UUIDPrimaryKey:
-    id = mapped_column(UUID, primary_key=True, default=create_uuid)
+    id = mapped_column(String(80), primary_key=True, default=create_uuid)
 
 
 class IDPrimaryKey:

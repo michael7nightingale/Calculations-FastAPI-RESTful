@@ -9,7 +9,7 @@ from app.api.dependencies.database import get_repository
 from app.api.dependencies.auth import get_token_
 
 
-auth_router = APIRouter(prefix='/auth')
+auth_router = APIRouter(prefix='/auth', tags=['Auth'])
 
 
 @auth_router.post("/token")
@@ -21,7 +21,7 @@ async def get_token(token: str = Depends(get_token_)):
 async def register_user(user_repo: UserRepository = Depends(get_repository(UserRepository)),
                         user_schema: UserRegister = Body()):
     try:
-        user = await user_repo.create(user_schema)
+        user = user_repo.create(user_schema)
         return user.as_dict()
     except (IntegrityError, PendingRollbackError):
         raise HTTPException(status_code=403, detail="asondo")

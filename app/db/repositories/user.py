@@ -1,4 +1,6 @@
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+from starlette.exceptions import HTTPException
 
 from app.services.auth import create_uuid
 from app.services.hasher import hash_password, verify_password
@@ -12,12 +14,15 @@ class UserRepository(BaseRepository):
 
         super().__init__(model=User, session=session)
 
-    async def create(self, user_schema: UserRegister):
+    def create(self, user_schema: UserRegister):
+        user_schema.password = hash_password(user_schema.password)
         user = super().create(**user_schema.dict())
         return user
 
-    async def login(self, user_schema: UserLogin) -> User:
-        user = await self.filter(username=user_schema.username)
+    def login(self, user_schema: UserLogin) -> User:
+        user = self.get_by(username=user_schema.username)
+        if user is None:
+            raise HTTPException(detail="No user", status_code=403)
         if verify_password(user_schema.password, user.password):
             return user
         else:
