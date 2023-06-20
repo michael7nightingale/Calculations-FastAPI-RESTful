@@ -1,0 +1,9 @@
+.idea
+venv
+__pycache__
+.dev.env
+tests/__pycache__
+src/__pycache__
+
+
+
