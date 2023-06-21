@@ -1,15 +1,12 @@
-import datetime
 import numpy as np
 import logging
 
-from fastapi import Depends
 from numpy import pi, e, cos, sin     # for eval()
 
 from app.db.repositories import HistoryRepository
 from . import counter
 from .metadata import storage
-from app.models.schemas.science import RequestSchema
-from app.models.schemas.history import HistorySchema
+from app.models.schemas import RequestSchema, HistoryIn
 from app.api.dependencies.database import get_repository
 
 # логирование
@@ -43,7 +40,7 @@ def build_template(request: RequestSchema,
             **dict(zip(find_args, nums * si))
         )[0]
         result = str(round(result, nums_comma))
-        history_repo.create(HistorySchema(
+        history_repo.create(HistoryIn(
             formula=formula_obj.formula,
             result=result,
             user=request.user_id
@@ -52,7 +49,6 @@ def build_template(request: RequestSchema,
     except (SyntaxError, NameError):
         message = "Невалидные данные."
     except TypeError:
-        raise
         message = "Ожидаются рациональные числа."
     except ZeroDivisionError:
         message = "На ноль делить нет смысла."

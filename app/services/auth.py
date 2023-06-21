@@ -5,7 +5,7 @@ from uuid import uuid4
 from app.core.config import get_app_settings
 
 
-def create_access_token(data) -> str:
+def create_access_token(data: dict) -> str:
     settings = get_app_settings()
     token = jwt.encode(
         claims=data,
@@ -15,7 +15,7 @@ def create_access_token(data) -> str:
     return token
 
 
-def decode_access_token(token) -> dict:
+def decode_access_token(token: str) -> dict:
     try:
         settings = get_app_settings()
         data = jwt.decode(

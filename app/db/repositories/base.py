@@ -25,6 +25,7 @@ class BaseRepository:
     def delete(self, id_: int) -> None:
         query = delete(self._model).where(self._model.id == id_)
         self._session.execute(query)
+        self.commit()
 
     def filter(self, **kwargs):
         query = select(self._model).filter_by(**kwargs)
@@ -37,6 +38,11 @@ class BaseRepository:
     def update(self, id_: int, **kwargs):
         query = update(self._model).where(self._model.id == id_).values(**kwargs)
         return (self._session.execute(query)).scalar_one_or_none()
+
+    def clear(self):
+        query = delete(self._model)
+        self._session.execute(query)
+        self.commit()
 
     def create(self, **kwargs):
         obj = self._model(**kwargs)

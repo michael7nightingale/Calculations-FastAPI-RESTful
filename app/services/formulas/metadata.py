@@ -69,6 +69,12 @@ class BaseFormula(ABC):
     def __repr__(self) -> str:
         return str(self.formula)
 
+    def as_dict(self) -> dict:
+        return {
+            "formula": self.formula,
+            "literals": {name: lit.dict() for name, lit in self.literals.items()},
+        }
+
     @abstractmethod
     def get_constants(self) -> Iterable[Literal]:
         pass
@@ -133,3 +139,7 @@ impulse = Formula(name='impulse', formula="p = m * V", p=Impulse, m=Mass, V=Spee
 pressure_liquid = Formula(name='pressure_liquid', formula="p = r * g * h", p=Pressure, r=Density, h=Height, g=G)
 newton2 = Formula(name="newton2", formula="F = m * a", F=Force, m=Mass, a=Acceleration)
 moving_proection = Formula(name='moving_proection', formula="s = x - x_0", s=Way, x=Coordinate, x_0=Coordinate)
+
+
+def get_formula(slug: str) -> Formula:
+    return storage.get(slug, None)
