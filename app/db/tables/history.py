@@ -11,4 +11,4 @@ class History(UUIDPrimaryKey, BaseTable, TableMixin):
     result = mapped_column(Float)
     user = mapped_column(String, ForeignKey("user.id"))
     formula = mapped_column(Integer, ForeignKey("formula.title"))
-    date_tome = mapped_column(DateTime(timezone=True), server_default=func.now())
+    date_time = mapped_column(DateTime(timezone=True), server_default=func.now())

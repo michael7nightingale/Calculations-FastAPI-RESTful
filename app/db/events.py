@@ -26,14 +26,16 @@ async def build_pool(app: FastAPI, settings: AppSettings) -> None:
 
 
 async def close_pool(app: FastAPI) -> None:
-    app.state.pool.close()
+    app.state.pool.close_all()
 
 
 async def create_superuser(app, settings: AppSettings):
     with app.state.pool() as session:
+        data = settings.superuser_kwargs
+        data['password'] = hash_password(data['password'])
         try:
             superuser = User(
-                **settings.superuser_kwargs,
+                **data,
                 is_superuser=True,
                 is_staff=True
             )
@@ -41,8 +43,6 @@ async def create_superuser(app, settings: AppSettings):
             session.commit()
         except IntegrityError:
             session.rollback()
-            data = settings.superuser_kwargs
-            data['password'] = hash_password(data['password'])
             session.execute(
                 update(User).where(User.username == settings.superuser_username).values(
                     **data,
