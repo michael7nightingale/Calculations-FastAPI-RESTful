@@ -9,7 +9,5 @@ class AppEnvTypes(str, Enum):
 
 
 class BaseAppSettings(BaseSettings):
-    app_env: AppEnvTypes = AppEnvTypes.dev
+    app_env: AppEnvTypes = AppEnvTypes.test
 
-    class Config:
-        env_file = ".env"

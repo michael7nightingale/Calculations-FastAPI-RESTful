@@ -16,3 +16,6 @@ class TestAppSettings(AppSettings):
     min_connection_count = 5
 
     logging_level = logging.DEBUG
+
+    class Config:
+        env_file = "test.env"

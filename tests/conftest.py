@@ -13,11 +13,13 @@ from app.models.schemas.user import UserShow, UserRegister
 from app.services.auth import create_access_token
 from app.api.routes import main_router, science_router, auth_router
 from app.main import get_application
-from app.db.events import build_pool, build_engine
+from app.db.events import build_engine
+from app.db.dumpdata.dump_data import dump_data
 
 
 @pytest_asyncio.fixture(scope="function")
 async def app() -> FastAPI:
+    """Get application function"""
     return get_application()
 
 
@@ -30,6 +32,7 @@ async def app() -> FastAPI:
 
 @pytest_asyncio.fixture(scope='function')
 async def initialized_app(app: FastAPI, settings: AppSettings = get_app_settings()):
+    """Initialize application pool and dump data to the database"""
     engine = await build_engine(settings)
     BaseTable.metadata.create_all(bind=engine)
     app.state.pool = sessionmaker(
@@ -37,6 +40,12 @@ async def initialized_app(app: FastAPI, settings: AppSettings = get_app_settings
         expire_on_commit=False,
         autoflush=False
     )
+    with app.state.pool() as conn:
+        try:
+            dump_data(conn)
+        except:
+            pass
+
     yield app
 
     BaseTable.metadata.drop_all(bind=engine)
@@ -90,9 +99,10 @@ async def authorized_client(token: str, client: AsyncClient) -> AsyncClient:
     yield client
 
 
+# comfortable way to test routes
 def get_url(router: APIRouter):
-    def inner(name: str):
-        return router.url_path_for(name)
+    def inner(name: str, **params):
+        return router.url_path_for(name, **params)
     return inner
 
 
