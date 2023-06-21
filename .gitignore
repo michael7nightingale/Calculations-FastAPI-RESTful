@@ -7,8 +7,10 @@ app/__pycache__
 app/db/migrations/versions/
 
 calculations.sqlite3
+calculations_test.sqlite3
 dev.env
 prod.env
+test.env
 
 
 
