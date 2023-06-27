@@ -1,5 +1,5 @@
 from sqlalchemy.orm import DeclarativeBase, mapped_column
-from sqlalchemy import Integer, UUID, func, String
+from sqlalchemy import Integer, String
 
 from app.services.auth import create_uuid
 

@@ -1,10 +1,7 @@
 import logging
 from typing import Any
 
-from pydantic import PostgresDsn, SecretStr
-
 from app.core.settings.base import BaseSettings
-from fastapi import FastAPI
 
 
 class AppSettings(BaseSettings):
@@ -68,5 +65,3 @@ class AppSettings(BaseSettings):
         for logger_name in self.loggers:
             logging_logger = logging.getLogger(logger_name)
             logging_logger.handlers = []
-
-

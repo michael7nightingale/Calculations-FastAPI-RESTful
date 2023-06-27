@@ -1,14 +1,17 @@
-from fastapi import APIRouter, Depends, Path
+from fastapi import APIRouter, Depends, Path, Request
 from starlette.exceptions import HTTPException
-from starlette.requests import Request
 
-from app.api.dependencies import get_repository, get_result, get_formula_information
+from app.api.dependencies import (
+    get_repository, get_result, get_formula_information,
+    get_plot_path
+)
 from app.db.repositories import ScienceRepository, CategoryRepository, FormulaRepository
 from app.models.schemas import FormulaShow, CategoryShow
 from app.resources.responses import (
     SCIENCE_NOT_FOUND, CATEGORY_NOT_FOUND, SPECIAL_CATEGORY,
 
-    )
+)
+from app.services.formulas.mathem_extra_counter import equation_system
 
 
 # initializing router
@@ -59,9 +62,31 @@ async def get_category(
     return category.as_dict()
 
 
+async def count_plot(plot_path: str = Depends(get_plot_path)):
+    """
+    Get plot image path on functions and settings.
+    """
+    return {"plot": plot_path}
+
+
+async def count_equations(request: Request):
+    """
+    Count equation or several ones.
+    """
+    data = request.form()
+    equations = []
+    for i in range(1, 10):
+        equation = data.get(f"equation{i}")
+        if equation is not None:
+            equations.append(equation)
+
+    solution = equation_system(equations)
+    return {"solution": solution}
+
+
 SPECIAL_CATEGORIES = {
-    "plots": ...,
-    "equations": ...,
+    "plots": count_plot,
+    "equations": count_equations,
 
 }
 
@@ -104,12 +129,8 @@ async def count_formula(result: str = Depends(get_result)):
 
 
 @science_router.post("/special-category/{category_slug}")
-async def post_special_category(category_slug: str = Path(), *args, **kwargs):
+async def count_special_category(request: Request, category_slug: str = Path(), *args, **kwargs):
     """
     Return function of a special category
     """
-    return (await SPECIAL_CATEGORY[category_slug](*args, **kwargs))
-
-
-async def count_plots(request: Request):
-    return
+    return await SPECIAL_CATEGORY[category_slug](*args, **kwargs)

@@ -4,8 +4,7 @@ from sqlalchemy.orm import Session
 from ..dependencies.auth import get_superuser
 from app.models.schemas.user import UserShow
 from app.db.dumpdata.dump_data import dump_data
-from ..dependencies.database import get_repository, __get_session
-from ...db.repositories import ScienceRepository
+from ..dependencies.database import __get_session
 
 main_router = APIRouter(prefix='', tags=['Main'])
 

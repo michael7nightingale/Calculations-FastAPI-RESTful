@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-from starlette.exceptions import HTTPException
 
 from app.api.routes import main_router, science_router, auth_router, cabinet_router
 from app.core.config import get_app_settings

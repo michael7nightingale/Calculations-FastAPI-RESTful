@@ -1,5 +1,5 @@
-from sqlalchemy import Column, String, DateTime, Boolean, func
-from sqlalchemy.orm import mapped_column, relationship
+from sqlalchemy import String, DateTime, Boolean, func
+from sqlalchemy.orm import mapped_column
 
 from app.db.tables.base import BaseTable, TableMixin, UUIDPrimaryKey
 
@@ -16,4 +16,3 @@ class User(UUIDPrimaryKey, BaseTable, TableMixin):
     date_join = mapped_column(DateTime(timezone=True), server_default=func.now())
     is_superuser = mapped_column(Boolean, default=False)
     is_staff = mapped_column(Boolean, default=False)
-

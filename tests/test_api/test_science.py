@@ -74,5 +74,14 @@ class TestCategory:
         assert len(resp.json())
 
 
-
-
+# class TestSpecialCategories:
+#
+#     async def test_equation_single(self, client: AsyncClient):
+#         data = {
+#             "equation1": "8 * x - 2 = 10"
+#         }
+#         resp = await client.post(get_science_url("count_special_category",
+#                                                  category_slug="equations"),
+#                                  data=data)
+#         print(resp.content)
+#         assert resp.status_code == status.HTTP_200_OK

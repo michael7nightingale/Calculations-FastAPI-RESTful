@@ -22,4 +22,3 @@ class UserRegister(BaseModel):
     email: str = Field(min_length=5, max_length=50)
     first_name: str
     last_name: str | None = None
-

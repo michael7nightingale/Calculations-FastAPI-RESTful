@@ -1,6 +1,4 @@
-from sqlalchemy import (Column, String, DateTime,
-                        Boolean, UUID, Integer, ForeignKey,
-                        Float, func)
+from sqlalchemy import String, DateTime, Integer, ForeignKey, Float, func
 from sqlalchemy.orm import mapped_column
 from app.db.tables.base import BaseTable, TableMixin, UUIDPrimaryKey
 

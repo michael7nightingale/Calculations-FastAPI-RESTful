@@ -2,10 +2,8 @@ import pytest
 from httpx import AsyncClient
 from starlette import status
 
-from app.resources.responses import USER_EXISTS, LOGIN_FAIL, NO_PERMISSIONS, USER_NOT_FOUND
-from app.services.hasher import hash_password
-from app.models.schemas.user import UserShow
-from app.services.auth import decode_access_token, create_access_token
+from app.resources.responses import USER_EXISTS, LOGIN_FAIL, USER_NOT_FOUND
+from app.services.auth import decode_access_token
 from ..conftest import get_auth_url
 
 
@@ -40,7 +38,9 @@ class TestAuth:
         data.pop('username')
         resp = await client.post(url=get_auth_url("register_user"), json=data)
         assert resp.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
-        assert resp.json() == {'detail': [{'loc': ['body', 'username'], 'msg': 'field required', 'type': 'value_error.missing'}]}
+        assert resp.json() == {
+            'detail': [{'loc': ['body', 'username'], 'msg': 'field required', 'type': 'value_error.missing'}]
+        }
 
     async def test_get_token(self, client: AsyncClient, user_data, token, user):
         login_data = {
@@ -71,4 +71,3 @@ class TestAuth:
         resp = await client.post(url=get_auth_url('get_token'), json=login_data)
         assert resp.status_code == status.HTTP_403_FORBIDDEN
         assert resp.json() == {"detail": USER_NOT_FOUND}
-

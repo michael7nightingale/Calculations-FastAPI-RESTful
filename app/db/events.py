@@ -1,10 +1,8 @@
-from sqlalchemy.exc import InvalidRequestError, IntegrityError
-from sqlalchemy.ext.asyncio import (async_sessionmaker, create_async_engine,
-                                    AsyncEngine, AsyncSession)
-from sqlalchemy import create_engine, select, update
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy import create_engine, update
 from sqlalchemy.orm import sessionmaker
 from .tables import User
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 
 from app.core.settings.app import AppSettings
 from ..services.hasher import hash_password
@@ -51,4 +49,3 @@ async def create_superuser(app, settings: AppSettings):
                 )
             )
             session.commit()
-

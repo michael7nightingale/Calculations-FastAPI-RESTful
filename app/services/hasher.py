@@ -9,4 +9,3 @@ def hash_password(pws: str) -> str:
 
 def verify_password(psw, hash_psw) -> bool:
     return hasher.verify(psw, hash_psw)
-
