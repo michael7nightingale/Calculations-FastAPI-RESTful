@@ -1,8 +1,6 @@
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from starlette.exceptions import HTTPException
 
-from app.services.auth import create_uuid
 from app.services.hasher import hash_password, verify_password
 from app.db.tables.user import User
 from app.models.schemas.user import UserLogin, UserRegister

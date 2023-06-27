@@ -1,14 +1,8 @@
 from typing import Callable
-
-from fastapi import Depends
 import csv
-import sys
-
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.db.repositories import ScienceRepository, CategoryRepository, FormulaRepository
-from app.api.dependencies.database import get_repository
 
 
 class Dumper:
@@ -51,5 +45,3 @@ class Dumper:
 def dump_data(session: Session):
     dumper = Dumper(session=session)
     dumper.dump_all()
-
-

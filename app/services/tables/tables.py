@@ -70,7 +70,7 @@ class BaseTableManager(ABC):
         """Проверка расширения файла"""
         try:
             match filename.rsplit('/', 1)[-1].split('.'):
-                case [file_, extension]:
+                case [_, extension]:
                     # if extension in TABLES['ALLOWED_EXTENSIONS']:
                     if extension == 'csv':
                         return True
@@ -78,7 +78,7 @@ class BaseTableManager(ABC):
                         raise exceptions.FileExtensionError
                 case _:
                     raise exceptions.FileExtensionError
-        except:
+        except Exception:
             raise exceptions.FileExtensionError
 
     def __iter__(self):
@@ -107,7 +107,7 @@ class CsvTableManager(BaseTableManager):
             for column in self.columns:
                 new_line[column] = line[column]
             self._data.append(new_line)
-        except Exception as e:
+        except Exception:
             raise exceptions.AddLineException
 
     def add_line(self, line_data: Sequence = tuple(),
@@ -221,7 +221,8 @@ class PandasTableManager(BaseTableManager):
                    column_data: Sequence = tuple(),
                    nullable: bool = False) -> None:
         if nullable:
-            nulls_to_add: int = len(self._data.values) - len(column_data) if (len(self._data.values) - len(column_data)) >= 0 else 0
+            nulls_to_add: int = len(self._data.values) - len(column_data)\
+                if (len(self._data.values) - len(column_data)) >= 0 else 0
             self._data[column_name] = (list(column_data) + ["" for _ in range(nulls_to_add)])[:len(self._data.values)]
         else:
             if len(column_data) != len(self.data):
@@ -258,4 +259,3 @@ class PandasTableManager(BaseTableManager):
             filepath = self.filepath
         self._data.to_csv(filepath)
         # logger.info(f'__TABLES__ SUCCESS - файл с таблицей сохранен по пути {filepath}')
-

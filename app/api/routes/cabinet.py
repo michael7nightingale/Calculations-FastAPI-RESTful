@@ -20,4 +20,3 @@ async def download_history(filepath: str = Depends(get_history_file)):
     if filepath is None:
         raise HTTPException(status_code=500, detail=HISTORY_DOWNLOAD_ERROR)
     return FileResponse(path=filepath)
-

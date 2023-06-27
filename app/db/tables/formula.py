@@ -1,5 +1,4 @@
-from sqlalchemy import (String, DateTime,
-                        Boolean, Integer, Text, ForeignKey)
+from sqlalchemy import String, Integer, Text, ForeignKey
 from sqlalchemy.orm import mapped_column
 from app.db.tables.base import BaseTable, TableMixin, IDPrimaryKey
 

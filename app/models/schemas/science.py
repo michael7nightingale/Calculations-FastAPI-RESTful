@@ -33,5 +33,3 @@ class RequestSchema(BaseModel):
     find_mark: str
     user_id: str | None = None
     nums_comma: int | None = 10
-
-

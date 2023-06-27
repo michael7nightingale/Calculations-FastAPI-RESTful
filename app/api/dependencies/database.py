@@ -20,5 +20,3 @@ def get_repository(type_: Type[BaseRepository]):
         return type_(session=session)
 
     return inner
-
-

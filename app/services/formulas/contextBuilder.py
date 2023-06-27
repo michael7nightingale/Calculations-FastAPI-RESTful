@@ -1,20 +1,18 @@
 import numpy as np
 import logging
 
-from numpy import pi, e, cos, sin     # for eval()
+from numpy import pi, e, cos, sin    # type: ignore # noqa: F401  # for eval()
 
 from app.db.repositories import HistoryRepository
-from . import counter
 from .metadata import storage
 from app.models.schemas import RequestSchema, HistoryIn
-from app.api.dependencies.database import get_repository
 
 # логирование
 logger = logging.getLogger(__name__)
 
 
 def build_template(request: RequestSchema,
-                         history_repo: HistoryRepository):
+                   history_repo: HistoryRepository):
     # получение параметров
     formula_obj = storage[request.formula_slug]
     params = formula_obj.literals

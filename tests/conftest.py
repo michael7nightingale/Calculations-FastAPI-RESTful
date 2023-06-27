@@ -1,7 +1,6 @@
-import pytest
-from asgi_lifespan import LifespanManager
+import pytest  # type: ignore # noqa: F401
 import pytest_asyncio
-from fastapi import FastAPI, Depends, APIRouter
+from fastapi import FastAPI, APIRouter
 from httpx import AsyncClient
 from sqlalchemy.orm import sessionmaker
 
@@ -43,7 +42,7 @@ async def initialized_app(app: FastAPI, settings: AppSettings = get_app_settings
     with app.state.pool() as conn:
         try:
             dump_data(conn)
-        except:
+        except Exception:
             pass
 
     yield app
@@ -109,4 +108,3 @@ def get_url(router: APIRouter):
 get_main_url = get_url(main_router)
 get_auth_url = get_url(auth_router)
 get_science_url = get_url(science_router)
-

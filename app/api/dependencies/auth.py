@@ -6,7 +6,7 @@ from app.models.schemas.user import UserLogin, UserShow
 from app.api.dependencies.database import get_repository
 from app.db.repositories.user import UserRepository
 from app.services.auth import create_access_token, decode_access_token
-from app.resources.responses import USER_NOT_FOUND, NO_PERMISSIONS
+from app.resources.responses import NO_PERMISSIONS
 
 
 oauth_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
